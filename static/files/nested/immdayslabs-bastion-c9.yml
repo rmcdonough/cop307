@@ -1,0 +1,93 @@
+---
+## Amazon DocumentDB Immersion Day Labs
+## Creates Cloud9 Instance
+##
+## Changelog:
+##
+## Dependencies:
+##
+## This sample code is made available under the MIT-0 license. See the LICENSE file.
+
+AWSTemplateFormatVersion: "2010-09-09"
+Description: DocumentDB Labs Cloud9 stack
+
+## Parameters
+Parameters:
+  EnvType:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - prod
+      - dev	
+  C9EC2InstanceType:
+    Description: EC2 instance type on which IDE runs
+    Type: String
+    Default: t3.small
+    AllowedValues:
+      - t3.nano
+      - t3.micro
+      - t3.small
+      - t3.medium
+      - t3.large
+      - m5.large
+  C9AutoHibernateTimeout:
+    Description: How many minutes idle before shutting down the IDE. Options, 30min, 1hr, 4hr, 1day, 1week, Never (0)
+    Type: Number
+    Default: 240
+    AllowedValues:
+      - 30
+      - 60
+      - 240
+      - 1440
+      - 10080
+      - 0
+  TemplateName:
+    Type: String
+    Description: Name used for different elements created.
+    Default: c9-docdb-lab
+  PubSubnetId:
+    Type: AWS::EC2::Subnet::Id
+    Description: ID of a Public Subnet for Cloud9.
+
+## Conditions
+Conditions:
+  isInEE:
+    !Equals [ !Ref EnvType, dev ]
+  isNotInEE:
+    !Equals [ !Ref EnvType, prod ]
+
+
+Resources:
+  Cloud9Instance:
+    Type: AWS::Cloud9::EnvironmentEC2
+    Properties:
+      Name: !Sub ${TemplateName}-Cloud9-IDE
+      Description: !Sub ${TemplateName}-Cloud9-IDE
+      AutomaticStopTimeMinutes: !Ref C9AutoHibernateTimeout
+      SubnetId: !Ref PubSubnetId
+      InstanceType: !Ref C9EC2InstanceType
+      OwnerArn:
+        !If [isInEE, !Sub 'arn:aws:sts::${AWS::AccountId}:assumed-role/TeamRole/MasterKey', !Ref "AWS::NoValue"]
+      # Repositories:
+      #     - RepositoryUrl: !Sub 'https://git-codecommit.${AWS::Region}.amazonaws.com/v1/repos/${RepositoryName}'
+      #       PathComponent: !Sub 'codecommit/${RepositoryName}'
+## Outputs
+Outputs:
+  Name:
+    Description: Name of the c9 instance
+    Value: !GetAtt 
+      - Cloud9Instance
+      - Name
+  Arn:
+    Description: Name of the c9 instance
+    Value: !GetAtt 
+      - Cloud9Instance
+      - Arn	  
+  Cloud9URL:
+    Description: DocumentDB Labs Cloud9 Environment
+    Value:
+      Fn::Join:
+      - ''
+      - - !Sub https://${AWS::Region}.console.aws.amazon.com/cloud9/ide/
+        - !Ref Cloud9Instance
+

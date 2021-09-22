@@ -1,0 +1,264 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+# Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this
+# software and associated documentation files (the "Software"), to deal in the Software
+# without restriction, including without limitation the rights to use, copy, modify,
+# merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+# PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Description: >
+  Builds a CloudWatch dashboard for a DocumentDB cluster.
+
+Parameters:
+  DbClusterIdentifier:
+    Type: String
+    Description: "DocumentDB cluster identifier"
+
+Resources: 
+  CpuAlarmOnPrimary:
+    Type: AWS::CloudWatch::Alarm
+    Properties: 
+      AlarmDescription: Alarm when primary CPU exceeds 80%
+      AlarmName: !Join ["", [!Ref DbClusterIdentifier, "-CPU-Primary"]]
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions: 
+        - Name: 'DBClusterIdentifier'
+          Value: !Ref DbClusterIdentifier
+        - Name: 'Role'
+          Value: "WRITER"
+      EvaluationPeriods: 1
+      MetricName: "CPUUtilization"
+      Namespace: "AWS/DocDB"
+      Period: 60
+      Statistic: "Average"
+      Threshold: 80.0
+    
+  Dashboard:
+    Type: AWS::CloudWatch::Dashboard
+    Properties: 
+      DashboardName: "DocumentDB-Metrics"
+      DashboardBody: !Sub |
+        {
+            "widgets": [
+                {
+                    "type": "metric",
+                    "x": 0,
+                    "y": 3,
+                    "width": 6,
+                    "height": 6,
+                    "properties": {
+                        "metrics": [
+                            [ "AWS/DocDB", "CPUUtilization", "Role", "WRITER", "DBClusterIdentifier", "${DbClusterIdentifier}" ]
+                        ],
+                        "view": "timeSeries",
+                        "stacked": false,
+                        "region": "${AWS::Region}",
+                        "title": "Primary CPU Utilization",
+                        "stat": "Average",
+                        "period": 60
+                    }
+                },
+                {
+                    "type": "metric",
+                    "x": 0,
+                    "y": 18,
+                    "width": 6,
+                    "height": 6,
+                    "properties": {
+                        "metrics": [
+                            [ "AWS/DocDB", "CPUUtilization", "Role", "READER", "DBClusterIdentifier", "${DbClusterIdentifier}" ]
+                        ],
+                        "view": "timeSeries",
+                        "stacked": false,
+                        "region": "${AWS::Region}",
+                        "title": "Reader CPU utilization",
+                        "period": 60,
+                        "stat": "Average"
+                    }
+                },
+                {
+                    "type": "metric",
+                    "x": 0,
+                    "y": 9,
+                    "width": 6,
+                    "height": 6,
+                    "properties": {
+                        "metrics": [
+                            [ "AWS/DocDB", "DBClusterReplicaLagMaximum", "Role", "WRITER", "DBClusterIdentifier", "${DbClusterIdentifier}" ]
+                        ],
+                        "view": "timeSeries",
+                        "stacked": false,
+                        "region": "${AWS::Region}",
+                        "title": "Replica lag",
+                        "period": 60,
+                        "stat": "Average"
+                    }
+                },
+                {
+                    "type": "metric",
+                    "x": 6,
+                    "y": 18,
+                    "width": 6,
+                    "height": 6,
+                    "properties": {
+                        "metrics": [
+                            [ "AWS/DocDB", "ReadIOPS", "Role", "READER", "DBClusterIdentifier", "${DbClusterIdentifier}" ],
+                            [ ".", "WriteIOPS", ".", ".", ".", "." ]
+                        ],
+                        "view": "timeSeries",
+                        "stacked": false,
+                        "region": "${AWS::Region}",
+                        "title": "Reader IOPS",
+                        "stat": "Average",
+                        "period": 60
+                    }
+                },
+                {
+                    "type": "metric",
+                    "x": 6,
+                    "y": 3,
+                    "width": 6,
+                    "height": 6,
+                    "properties": {
+                        "view": "timeSeries",
+                        "stacked": false,
+                        "metrics": [
+                            [ "AWS/DocDB", "ReadIOPS", "Role", "WRITER", "DBClusterIdentifier", "${DbClusterIdentifier}" ],
+                            [ ".", "WriteIOPS", ".", ".", ".", "." ]
+                        ],
+                        "region": "${AWS::Region}",
+                        "title": "Primary IOPS"
+                    }
+                },
+                {
+                    "type": "metric",
+                    "x": 12,
+                    "y": 3,
+                    "width": 6,
+                    "height": 6,
+                    "properties": {
+                        "metrics": [
+                            [ "AWS/DocDB", "ReadLatency", "Role", "WRITER", "DBClusterIdentifier", "${DbClusterIdentifier}" ],
+                            [ ".", "WriteLatency", ".", ".", ".", "." ]
+                        ],
+                        "view": "timeSeries",
+                        "stacked": false,
+                        "region": "${AWS::Region}",
+                        "title": "Primary I/O Latency",
+                        "stat": "Average",
+                        "period": 60
+                    }
+                },
+                {
+                    "type": "metric",
+                    "x": 12,
+                    "y": 18,
+                    "width": 6,
+                    "height": 6,
+                    "properties": {
+                        "metrics": [
+                            [ "AWS/DocDB", "WriteLatency", "Role", "READER", "DBClusterIdentifier", "${DbClusterIdentifier}" ],
+                            [ ".", "ReadLatency", ".", ".", ".", "." ]
+                        ],
+                        "view": "timeSeries",
+                        "stacked": false,
+                        "region": "${AWS::Region}",
+                        "title": "Reader I/O Latency",
+                        "stat": "Average",
+                        "period": 60
+                    }
+                },
+                {
+                    "type": "metric",
+                    "x": 18,
+                    "y": 3,
+                    "width": 6,
+                    "height": 6,
+                    "properties": {
+                        "metrics": [
+                            [ "AWS/DocDB", "SwapUsage", "Role", "WRITER", "DBClusterIdentifier", "${DbClusterIdentifier}" ]
+                        ],
+                        "view": "timeSeries",
+                        "stacked": false,
+                        "region": "${AWS::Region}",
+                        "title": "Primary swap usage",
+                        "stat": "Average",
+                        "period": 60
+                    }
+                },
+                {
+                    "type": "metric",
+                    "x": 18,
+                    "y": 18,
+                    "width": 6,
+                    "height": 6,
+                    "properties": {
+                        "metrics": [
+                            [ "AWS/DocDB", "SwapUsage", "Role", "READER", "DBClusterIdentifier", "${DbClusterIdentifier}" ]
+                        ],
+                        "view": "timeSeries",
+                        "stacked": false,
+                        "region": "${AWS::Region}",
+                        "stat": "Average",
+                        "period": 60,
+                        "title": "Reader swap usage"
+                    }
+                },
+                {
+                    "type": "text",
+                    "x": 0,
+                    "y": 0,
+                    "width": 24,
+                    "height": 3,
+                    "properties": {
+                        "markdown": "\n# Primary\n"
+                    }
+                },
+                {
+                    "type": "text",
+                    "x": 0,
+                    "y": 15,
+                    "width": 24,
+                    "height": 3,
+                    "properties": {
+                        "markdown": "\n# Readers\n"
+                    }
+                },
+                {
+                    "type": "text",
+                    "x": 0,
+                    "y": 24,
+                    "width": 24,
+                    "height": 3,
+                    "properties": {
+                        "markdown": "\n# Alarms\n"
+                    }
+                },
+                {
+                    "type": "alarm",
+                    "x": 0,
+                    "y": 27,
+                    "width": 6,
+                    "height": 2,
+                    "properties": {
+                        "title": "Alarms",
+                        "alarms": [
+                            "${CpuAlarmOnPrimary.Arn}"
+                        ]
+                    }
+                }
+            ]
+        }
+
+Outputs:
+  DashboardName:
+    Value: !Ref Dashboard

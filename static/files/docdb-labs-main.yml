@@ -1,0 +1,123 @@
+---
+## Amazon DocumewntDB Immersion Day Labs
+## Main Stack which creates VPC, Cloud9 and DocumentDB Cluster
+##
+## Changelog:
+##
+## Dependencies:
+## none
+##
+
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Amazon DocumentDB Labs Stackset
+
+## Parameters
+Parameters:
+  CreateCluster:
+    Type: String
+    Default: "true"
+    AllowedValues:
+      - "true"
+      - "false"
+    Description: Determines if the database instance needs to be created.
+  migrationResources:
+    Type: String
+    Default: "true"
+    AllowedValues:
+      - "true"
+      - "false"
+    Description: Select "true" if allocating sample migration resources(DMS, Mongo EC2)
+    Default: "true"
+  EnvType:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - prod
+      - dev
+    Description: Select prod if are setting this up on your own environment and not using EE provided by AWS.
+
+## Conditions
+Conditions:
+  deployMigModules: !Equals [ !Ref migrationResources, "true" ]
+  createCluster: !Equals [ !Ref CreateCluster, "true" ]
+  isInEE: !Equals [ !Ref EnvType, dev ]
+
+Mappings:
+  ClusterSettings:
+    global:
+      bucketPrefix: https://s3.amazonaws.com/ee-assets-prod-us-east-1/modules/c55fc8f9e8cf4231b0c09a7a493fdf78/v1/nested/
+      DmsSgNameStr: "MigLab-DMS-SG"
+      TemplateName: "labs"
+
+## Resources
+Resources:
+  immdayslabsVPCStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Join ['',[ !FindInMap [ ClusterSettings,global,bucketPrefix ], 'immdayslabs-vpc.yml']]
+      Parameters:
+        TemplateName: !FindInMap [ ClusterSettings,global,TemplateName ]
+        DmsSgName: !FindInMap [ ClusterSettings,global,DmsSgNameStr ]
+  immdayslabsC9Stack:
+    Type: AWS::CloudFormation::Stack
+    DependsOn: immdayslabsVPCStack
+    Properties:
+      TemplateURL: !Join ['',[ !FindInMap [ ClusterSettings,global,bucketPrefix ], 'immdayslabs-bastion-c9.yml']]
+      Parameters:
+          PubSubnetId: !GetAtt immdayslabsVPCStack.Outputs.PublicSubnetA
+          TemplateName: !FindInMap [ ClusterSettings,global,TemplateName ]
+          EnvType: !Ref EnvType
+  dmsLabsStack:
+    Type: AWS::CloudFormation::Stack
+    DependsOn: immdayslabsVPCStack
+    Condition: deployMigModules
+    Properties:
+      TemplateURL: !Join ['',[ !FindInMap [ ClusterSettings,global,bucketPrefix ], 'dms.yml']]
+      Parameters:
+          PrivateSubnets: !Join [',',[ !GetAtt 'immdayslabsVPCStack.Outputs.PrivateSubnetA', !GetAtt 'immdayslabsVPCStack.Outputs.PrivateSubnetB']]
+          MainVPC: !GetAtt immdayslabsVPCStack.Outputs.MainVPC
+          DmsSgId: !GetAtt immdayslabsVPCStack.Outputs.DmsSgId
+
+  mongoLabsStack:
+    Type: AWS::CloudFormation::Stack
+    DependsOn: immdayslabsVPCStack
+    Condition: deployMigModules
+    Properties:
+      TemplateURL: !Join ['',[ !FindInMap [ ClusterSettings,global,bucketPrefix ], 'mongo-ec2.yml']]
+      Parameters:
+          MainVPC: !GetAtt 'immdayslabsVPCStack.Outputs.MainVPC'
+          PrivateSubnets: !Join [',',[ !GetAtt 'immdayslabsVPCStack.Outputs.PrivateSubnetA', !GetAtt 'immdayslabsVPCStack.Outputs.PrivateSubnetB']]
+          DmsSgId: !GetAtt immdayslabsVPCStack.Outputs.DmsSgId
+          InstanceKeyPairParameter: !If [isInEE, 'ee-default-keypair', 'docdb-mig-lab-keys']
+
+  docdblabsStack:
+    Type: AWS::CloudFormation::Stack
+    DependsOn: immdayslabsVPCStack
+    Properties:
+      TemplateURL: !Join ['',[ !FindInMap [ ClusterSettings,global,bucketPrefix ], 'docdb-cluster.yml']] 
+      Parameters:
+          MainVPC: !GetAtt immdayslabsVPCStack.Outputs.MainVPC
+          PrivateSubnets: !Join [',',[ !GetAtt 'immdayslabsVPCStack.Outputs.PrivateSubnetA', !GetAtt 'immdayslabsVPCStack.Outputs.PrivateSubnetB', !GetAtt 'immdayslabsVPCStack.Outputs.PrivateSubnetC']]
+          DmsSgId: !GetAtt immdayslabsVPCStack.Outputs.DmsSgId
+          CreateCluster: !Ref CreateCluster
+
+## Outputs
+Outputs:
+  LabVPC:
+    Description: DcoumentDB Lab VPC
+    Value: !GetAtt immdayslabsVPCStack.Outputs.MainVPC
+  Cloud9URL:
+    Description: Cloud9 URL
+    Value: !GetAtt immdayslabsC9Stack.Outputs.Cloud9URL
+  EC2MongoIp:
+    Description: Private IP of Mongo instnace
+    Value: !GetAtt mongoLabsStack.Outputs.PrivateIp
+    Condition: deployMigModules
+  clusterEndpoint:
+    Description: DocumentDB Cluster Endpoint
+    Value: !GetAtt docdblabsStack.Outputs.ClusterEndpoint
+    Condition: createCluster
+  Port:
+    Description: DocumentDB Endpoint Port
+    Value: !GetAtt docdblabsStack.Outputs.ClusterPort
+    Condition: createCluster

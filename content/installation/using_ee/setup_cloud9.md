@@ -1,0 +1,113 @@
+---
+date: "2020-08-29T14:10:29-04:00"
+hidden: false
+pre: <b>▶︎ </b>
+title: Setup Cloud9 (optional)
+weight: 10
+---
+
+
+::alert[Cloud9 typically manages IAM credentials dynamically. Because we want to have a specific IAM role for EKS, we will be turning off this functionality.]{type="info"}
+
+::alert[You only need to follow these instructions if you want to interact with the environment through Cloud9 such as executing commands. Since the application is already deployed and setup, you can go directly to the module you are interested in.]{type="info"}
+
+
+### Disable AWS managed temporary credentials
+1. In the AWS Management Console on the Services menu, click `Cloud9`.
+2. Click `Open IDE` on the `observabilityworkshop` Cloud9 instance.
+
+3. Click the gear icon in the top right to open the `Prefences` tab.
+4. Select `AWS SETTINGS` from the left navigation menu.
+5. Toggle off the `AWS managed temporary credentials` setting.
+6. Close the `Preferences` tab.
+![c9disableiam](/static/images/c9disableiam.png)
+
+
+### Attach IAM Instance Profile
+7. Select `Manage EC2 Instances` on the User details in the top right corner:
+
+![manageEC2Instance](/static/images/manageec2.png)
+
+8. Select the Cloud9 EC2 instance, then `Modify IAM role`.
+
+![cloud9ModifyRole](/static/images/cloud9modifyRole.png)
+
+9. Select the IAM Role `observabilityworkshop-profile` from the list and click Save.
+
+![cloud9ModifyRole2](/static/images/cloud9modifyRole2.png)
+
+### Remove temporary credentials
+10. Navigate to the terminal at the bottom of the screen. (If you do not see  a terminal, click `Window` from the top menu, then `New Terminal`).
+
+11. Execute the following command in the terminal:
+> This script ensures that no temporary credentials are already in place by removing any existing credentials file. 
+```bash
+rm -vf ${HOME}/.aws/credentials
+```
+
+### Install tools
+
+12. Execute the following command in the terminal:
+> This script installs all the necessary tools and utilities required. It also downloads the source code required for the workshop.
+
+```bash
+curl -sSL https://raw.githubusercontent.com/aws-samples/one-observability-demo/main/PetAdoptions/envsetup_ee.sh | bash -s stable
+```
+
+### Configure AWS CLI with the current AWS Region as default:
+
+13. Execute the following commands in the terminal:
+
+> This script configures the AWS CLI to use the current region as the default.
+
+```bash
+export ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)
+export AWS_REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.region')
+echo "export ACCOUNT_ID=${ACCOUNT_ID}" | tee -a ~/.bash_profile
+echo "export AWS_REGION=${AWS_REGION}" | tee -a ~/.bash_profile
+aws configure set default.region ${AWS_REGION}
+aws configure get default.region
+```
+
+### Validate environment settings
+
+14. Execute the following commands in the terminal:
+
+> This script validates that your environment settings are correct.
+
+```bash
+test -n "$AWS_REGION" && echo AWS_REGION is "$AWS_REGION" || echo AWS_REGION is not set
+
+aws sts get-caller-identity --query Arn | grep observabilityworkshop-admin -q && echo "You're good. IAM role IS valid." || echo "IAM role NOT valid. DO NOT PROCEED."
+```
+
+### Install CDK packages
+15. Once cloned successfully, execute the following command in the terminal:
+> This command will navigate you to the `pet_stack` folder.
+
+```bash
+cd workshopfiles/one-observability-demo/PetAdoptions/cdk/pet_stack
+```
+
+16. Execute the following command in the terminal:
+> This command installs all npm packages.
+
+```bash
+npm install
+```
+
+### Update kubeconfig
+17. Execute the following commands in the terminal:
+> These commands update kubeconfig so you can interact with the EKS cluster
+
+```bash
+aws eks update-kubeconfig --name PetSite --region $AWS_REGION            
+kubectl get nodes
+```
+
+After execution, your output should look like the screenshot below:
+![Kubeconfig](/static/images/eksconfigured.png)
+
+You have now successfully setup your Cloud9 environment.
+
+::alert[To explore the web application, [click here](/installation/not_using_ee/_deploy_app#playaround-with-the-app-optional).]{type="info"}

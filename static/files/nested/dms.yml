@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: DMS for DocumentDB migration lab
+Parameters:
+  PrivateSubnets:
+    Description: Comma separated list of private subnets. 
+    Type: String
+  MainVPC:
+    Type: String
+  DmsSgId:
+    Type: String
+
+Resources:
+  DMSVPCRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+              - dms.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      RoleName: dms-vpc-role
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonDMSVPCManagementRole
+
+  DMSCloudwatchRole :
+    DependsOn: DMSVPCRole
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+              - dms.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      RoleName: dms-cloudwatch-logs-role
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonDMSCloudWatchLogsRole
+
+  DMSforDocumentDB:
+    DependsOn: DMSReplicationSubnetGroup
+    Type: "AWS::DMS::ReplicationInstance"
+    Properties:
+      ReplicationInstanceClass: dms.t2.medium
+      ReplicationSubnetGroupIdentifier: !Ref DMSReplicationSubnetGroup
+      VpcSecurityGroupIds: [!Ref DmsSgId]
+
+  DMSReplicationSubnetGroup:
+    DependsOn: DMSVPCRole
+    Type: "AWS::DMS::ReplicationSubnetGroup"
+    Properties:
+      ReplicationSubnetGroupDescription: DMSReplic-mig-docdb
+      ReplicationSubnetGroupIdentifier: DMSReplic-mig-docdb
+      SubnetIds: !Split [',',!Ref PrivateSubnets]

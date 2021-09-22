@@ -1,0 +1,355 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Template for MongoDB on EC2 for migration lab module
+# TODO : Create more restrictive ingress rules. Currently it is allowing everyone from public subnet.
+Parameters:
+  InstanceKeyPairParameter:
+    Description: Amazon EC2 Key Pair for MongoDB source database instance
+    Type: "AWS::EC2::KeyPair::KeyName"
+
+  PrivateSubnets:
+    Description: Comma separated list of private subnets.
+    Type: String
+    Default: subnet-0dd17e5a36365b373,subnet-0ae336812fb32de20
+  DmsSgId:
+    Type: String
+    Description: DMS Security group name
+    Default: sg-0bf876934bfe4302b
+  MainVPC:
+    Type: String
+    Description: Main VPC where lab resources are created
+    Default: vpc-02216216c53318444
+  MongoUser:
+    Description: Default user for Mongo EC2
+    Type: String
+    Default: labuser
+    MinLength: 5
+    NoEcho: false
+    AllowedPattern: "[a-zA-Z0-9]{5,}"
+  MongoPassword:
+    Description: Default Password for Mongo EC2
+    Type: String
+    Default: 202xDoc
+    MinLength: 7
+    NoEcho: true
+    AllowedPattern: "[a-zA-Z0-9]{7,}"
+
+## Conditions
+
+Mappings:
+  RegionMap:
+    ap-northeast-1:
+      "AMI": "ami-0cc75a8978fbbc969"
+    ap-northeast-2:
+      "AMI": "ami-0bd7691bf6470fe9c"
+    ap-south-1:
+      "AMI": "ami-0ebc1ac48dfd14136"
+    ap-southeast-1:
+      "AMI": "ami-0cd31be676780afa7"
+    ap-southeast-2:
+      "AMI": "ami-0ded330691a314693"
+    ca-central-1:
+      "AMI": "ami-013d1df4bcea6ba95"
+    eu-central-1:
+      "AMI": "ami-0c115dbd34c69a004"
+    eu-west-1:
+      "AMI": "ami-07d9160fa81ccffb5"
+    eu-west-2:
+      "AMI": "ami-0a13d44dccf1f5cf6"
+    eu-west-3:
+      "AMI": "ami-093fa4c538885becf"
+    us-east-1:
+      "AMI": "ami-02354e95b39ca8dec"
+    us-east-2:
+      "AMI": "ami-07c8bc5c1ce9598c3"
+    us-west-2:
+      "AMI": "ami-0873b46c45c11058d"
+
+Resources:
+  labDcDBEC2InstanceProfile:
+    DependsOn: labDcDBEC2ExecutionRole
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+      Path: /
+      InstanceProfileName: 'EC2InstanceProfile-labview'
+      Roles:
+        - !Ref labDcDBEC2ExecutionRole
+  labDcDBEC2ExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: EC2rolelabview
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - ec2.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+      Policies:
+      - PolicyName: root
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - lambda:ListFunctions
+            - lambda:ListEventSourceMappings
+            - lambda:ListLayerVersions
+            - lambda:ListLayers
+            - lambda:GetAccountSettings
+            - lambda:CreateEventSourceMapping
+            - lambda:UpdateFunctionCode
+            Resource: '*'
+          - Effect: Allow
+            Action:
+            - s3:*
+            Resource: '*'
+  MongoDBEc2Instance:
+    DependsOn: labDcDBEC2InstanceProfile
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      KeyName:
+        Ref: InstanceKeyPairParameter
+      ImageId:  !FindInMap [RegionMap, !Ref "AWS::Region", AMI]
+      InstanceType: r5.large
+      IamInstanceProfile: EC2InstanceProfile-labview
+      UserData:
+        Fn::Base64:
+          !Sub |
+            #!/bin/bash
+            echo "downloading mongondb-org 4.0 packages from https://repo.mongodb.org/yum/amazon/2013.03/mongodb-org/4.0/x86_64/RPMS/ ..."  >>/tmp/mongosetup.log
+            wget https://repo.mongodb.org/yum/amazon/2013.03/mongodb-org/4.0/x86_64/RPMS/mongodb-org-4.0.21-1.amzn1.x86_64.rpm
+            wget https://repo.mongodb.org/yum/amazon/2013.03/mongodb-org/4.0/x86_64/RPMS/mongodb-org-server-4.0.21-1.amzn1.x86_64.rpm
+            wget https://repo.mongodb.org/yum/amazon/2013.03/mongodb-org/4.0/x86_64/RPMS/mongodb-org-shell-4.0.21-1.amzn1.x86_64.rpm
+            wget https://repo.mongodb.org/yum/amazon/2013.03/mongodb-org/4.0/x86_64/RPMS/mongodb-org-mongos-4.0.21-1.amzn1.x86_64.rpm
+            wget https://repo.mongodb.org/yum/amazon/2013.03/mongodb-org/4.0/x86_64/RPMS/mongodb-org-tools-4.0.21-1.amzn1.x86_64.rpm
+            echo "running rpm for mongodb-org installation..."  >>/tmp/mongosetup.log
+            rpm -Uvh mongodb-org-tools-4.0.21-1.amzn1.x86_64.rpm >>/tmp/mongosetup.log
+            rpm -Uvh mongodb-org-mongos-4.0.21-1.amzn1.x86_64.rpm >>/tmp/mongosetup.log
+            rpm -Uvh mongodb-org-server-4.0.21-1.amzn1.x86_64.rpm >>/tmp/mongosetup.log
+            rpm -Uvh mongodb-org-shell-4.0.21-1.amzn1.x86_64.rpm >>/tmp/mongosetup.log
+            rpm -Uvh mongodb-org-4.0.21-1.amzn1.x86_64.rpm >>/tmp/mongosetup.log
+            echo "starting mongo service... " >>/tmp/mongosetup.log
+            service mongod start >>/tmp/mongosetup.log
+            echo "install telnet service... " >>/tmp/mongosetup.log
+            yum install telnet -y >>/tmp/mongosetup.log
+            chkconfig mongod on >>/tmp/mongosetup.log
+            echo "db = db.getSiblingDB('labdb') " | tee file.js
+            echo "db.createUser({user:\"${MongoUser}\", pwd:\"${MongoPassword}\",  roles: [{role:\"readWrite\",db: \"admin\"},{role:\"readWrite\",db: \"labdb\"},\"readWrite\", \"dbAdmin\"] })" | tee -a file.js
+            echo "db.createCollection('customers')" | tee -a file.js
+            echo "db.createCollection('locations')" | tee -a file.js
+            echo "db.createUser({user:\"docdb\", pwd:\"${MongoPassword}\",  roles: [\"readWrite\", \"dbAdmin\"] })" | tee -a file.js
+            echo "db = db.getSiblingDB('admin') " | tee -a file.js
+            echo "db.createUser({ user: \"labdb\" , pwd: \"${MongoPassword}\", roles: [{ role : \"read\", db : \"local\"  },\"userAdminAnyDatabase\", \"dbAdminAnyDatabase\", \"readWriteAnyDatabase\",\"clusterManager\",\"clusterAdmin\"]})"  | tee -a file.js
+            echo "db.createUser({ user: \"dmsuser\" , pwd: \"${MongoPassword}\", roles: [{ role : \"read\", db : \"local\"  },\"userAdminAnyDatabase\", \"dbAdminAnyDatabase\", \"readWriteAnyDatabase\"]})" | tee -a file.js
+            echo "db.grantRolesToUser(\"dmsuser\",[ \"readWrite\" , { role: \"readWrite\", db: \"labdb\" } ])" | tee -a file.js
+            echo "complete user creation and permissions"  >>/tmp/mongosetup.log
+            mongo file.js >>/tmp/mongosetup.log
+            sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf
+            sed -i '/#security:/d' /etc/mongod.conf
+            echo "security:" | tee -a /etc/mongod.conf
+            echo " authorization: 'enabled'" | tee -a /etc/mongod.conf
+            service mongod restart
+            echo "db = db.getSiblingDB('admin') " | tee file2.js
+            echo "rs.initiate( {_id : \"rs0\",members: [{ _id: 0, host: \"localhost:27017\" }]})" | tee -a file2.js
+            echo "rs.conf()" | tee -a file2.js
+            echo "setup replication configuration..."  >>/tmp/mongosetup.log
+            sed -i '/#replication:/d' /etc/mongod.conf
+            echo "replication:" | tee -a /etc/mongod.conf
+            echo "   replSetName: "rs0"" | tee -a /etc/mongod.conf
+            echo "restarting mongo service with replicaset.. " >>/tmp/mongosetup.log
+            service mongod restart >>/tmp/mongosetup.log
+            echo "setup replication..."  >>/tmp/mongosetup.log
+            mongo mongodb://labdb:202xDoc@localhost/admin file2.js  >>/tmp/mongosetup.log
+            sleep 6m
+            yum install python3.7 -y >>/tmp/lambdasetup.log
+            yum install jq -y >>/tmp/lambdasetup.log
+            mkdir lambda >>/tmp/lambdasetup.log
+            cd lambda >>/tmp/lambdasetup.log
+            aws s3 cp s3://ee-assets-prod-us-east-1/modules/ce6227b27991465b8e11d20b84327034/v2/lambda_mongo.py . >>/tmp/lambdasetup.log
+            aws s3 cp s3://ee-assets-prod-us-east-1/modules/ce6227b27991465b8e11d20b84327034/v2/ingestion.py . >>/tmp/lambdasetup.log
+            pip3 install pymongo -t . >>/tmp/lambdasetup.log
+            zip -r ../newlambda.zip * >>/tmp/lambdasetup.log
+            REGION=`curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq -c -r .region` >>/tmp/log.log
+            aws lambda update-function-code --function-name mongoDBcustomer --zip-file fileb:\/\/../newlambda.zip --region $REGION >>/tmp/lambdasetup.log
+            aws lambda update-function-code --function-name mongoDBlocation --zip-file fileb:\/\/../newlambda.zip --region $REGION >>/tmp/lambdasetup.log
+      Tags:
+        - Key: "Name"
+          Value: "MongoDBInstance"
+      NetworkInterfaces:
+        - GroupSet:
+          - Ref: EC2InstanceSecurityGroup
+          AssociatePublicIpAddress: 'true'
+          DeviceIndex: '0'
+          DeleteOnTermination: 'true'
+          SubnetId: !Select [ 0, !Split [',',!Ref PrivateSubnets]]
+  EC2InstanceSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      VpcId: !Ref MainVPC	
+      GroupDescription: Enable DMS access to Mongo Instance
+      GroupName: MigLab-MongoDB-Access
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '27017'
+          ToPort: '27017'
+          SourceSecurityGroupId: !Ref DmsSgId
+
+  EC2SelfRefIngress:
+    Type: 'AWS::EC2::SecurityGroupIngress'
+    DependsOn: EC2InstanceSecurityGroup
+    Properties:
+      GroupId: !Ref EC2InstanceSecurityGroup
+      IpProtocol: tcp
+      FromPort: '27017'
+      ToPort: '27017'
+      SourceSecurityGroupId: !Ref EC2InstanceSecurityGroup
+
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+      Policies:
+      - PolicyName: root
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - logs:*
+            Resource: arn:aws:logs:*:*:*
+          - Effect: Allow
+            Action:
+            - ec2:CreateNetworkInterface
+            - ec2:DescribeNetworkInterfaces
+            - ec2:DeleteNetworkInterface
+            - ec2:DescribeSecurityGroups
+            - ec2:DescribeSubnets
+            - ec2:DescribeVpcs
+            Resource: "*"
+  LambdaCustomerMongodb:
+    DependsOn: MongoDBEc2Instance
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+          import boto3
+          import time
+      Description: This lambda simulates transactions to Mongodb source db
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Environment:
+        Variables:
+          MONGOIP: !GetAtt MongoDBEc2Instance.PrivateIp
+          LOGIN: "labuser:202xDoc"
+      FunctionName: mongoDBcustomer
+      Handler: lambda_mongo.lambda_handler
+      MemorySize: 128
+      Runtime: python3.7
+      Timeout: 60
+      VpcConfig:
+        SecurityGroupIds:
+          - !GetAtt EC2InstanceSecurityGroup.GroupId
+        SubnetIds: !Split [',',!Ref PrivateSubnets]
+  LambdaLocationMongodb:
+    DependsOn: MongoDBEc2Instance
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+          import boto3
+          import time
+      Description: This lambd a simulates transactions to Mongodb source db
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Environment:
+        Variables:
+          MONGOIP: !GetAtt MongoDBEc2Instance.PrivateIp
+          LOGIN: "labuser:202xDoc"
+      FunctionName: mongoDBlocation
+      Handler: ingestion.lambda_handler
+      MemorySize: 128
+      Runtime: python3.7
+      Timeout: 60
+      VpcConfig:
+        SecurityGroupIds:
+          - !GetAtt EC2InstanceSecurityGroup.GroupId
+        SubnetIds: !Split [',',!Ref PrivateSubnets]
+  ScheduledLocationMongodb:
+            Type: AWS::Events::Rule
+            Properties:
+              Description: ScheduledLocationMongodb
+              ScheduleExpression: rate(5 minutes)
+              State: ENABLED
+              Targets:
+                -
+                  Arn: !Sub ${LambdaLocationMongodb.Arn}
+                  Id: LambdaGaTables
+  LambdaInvokeLocationMongodb:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Sub ${LambdaLocationMongodb.Arn}
+      Action: 'lambda:InvokeFunction'
+      Principal: events.amazonaws.com
+      SourceArn: !Sub ${ScheduledLocationMongodb.Arn}
+  ScheduledCustomerMongodb:
+            Type: AWS::Events::Rule
+            Properties:
+              Description: ScheduledCustomerMongodb
+              ScheduleExpression: rate(5 minutes)
+              State: ENABLED
+              Targets:
+                -
+                  Arn: !Sub ${LambdaCustomerMongodb.Arn}
+                  Id: LambdaGaTables
+  LambdaInvokeCustomerMongodb:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Sub ${LambdaCustomerMongodb.Arn}
+      Action: 'lambda:InvokeFunction'
+      Principal: events.amazonaws.com
+      SourceArn: !Sub ${ScheduledCustomerMongodb.Arn}
+
+## Outputs
+Outputs:
+  InstanceId:
+    Description: InstanceId of the newly created EC2 instance
+    Value: !Ref MongoDBEc2Instance
+  AZ:
+    Description: Availability Zone of the newly created EC2 instance
+    Value: !GetAtt 
+      - MongoDBEc2Instance
+      - AvailabilityZone
+  PublicDNS:
+    Description: Public DNSName of the newly created EC2 instance
+    Value: !GetAtt 
+      - MongoDBEc2Instance
+      - PublicDnsName
+  PublicIP:
+    Description: Public IP address of the newly created EC2 instance
+    Value: !GetAtt 
+      - MongoDBEc2Instance
+      - PublicIp
+  PrivateIp:
+    Description: Private IP of Mongo Instance
+    Value: !GetAtt 
+      - MongoDBEc2Instance
+      - PrivateIp
+  MongoUser:
+    Description: Default mongo user
+    Value: !Ref MongoUser
+  MongoPassword:
+    Description: Default mongo password
+    Value: !Ref MongoPassword
+  MongoSgId:
+    Description: Default mongo password
+    Value: !Ref EC2InstanceSecurityGroup	

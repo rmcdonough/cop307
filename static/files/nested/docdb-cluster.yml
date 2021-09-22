@@ -1,0 +1,112 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: DocumentDB Cluster Template
+Parameters:
+  DmsSgId:
+    Type: String
+    Description: DMS security group ID
+  PrivateSubnets:
+    Description: Comma separated list of private subnets.
+    Type: String
+  MainVPC:
+    Description: Main VPC created for the lab
+    Type: String	
+  DocDBUser:
+    Description: Default user for DocumentDB
+    Type: String
+    Default: labuser
+  CreateCluster:
+    Description: Flag for creating docdb cluster
+    Type: String
+    Default: "true"
+    AllowedValues:
+      - "true"
+      - "false"
+  DocDBPassword:
+    Description: Password for DocumentDB Cluster
+    Type: String
+    Default: Tim3t0change
+    MinLength: 8
+    NoEcho: true
+    AllowedPattern: "[a-zA-Z0-9]{8,}"
+
+Conditions:
+  createCluster: !Equals [ !Ref CreateCluster, "true" ]
+
+
+Resources:
+  DocDBSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      VpcId: !Ref MainVPC
+      GroupDescription: Enable TCP via port 27017
+      GroupName: docDb-Inbound
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '27017'
+          ToPort: '27017'
+          SourceSecurityGroupId: !Ref DmsSgId
+  DocDBInstance1:
+    DependsOn: DocDBCluster
+    Type: AWS::DocDB::DBInstance
+    Condition: createCluster
+    Properties:
+      DBClusterIdentifier: !Ref DocDBCluster
+      DBInstanceClass: db.r5.large
+      DBInstanceIdentifier: getting-started-with-documentdb
+  DocDBInstance2:
+    DependsOn: DocDBCluster
+    Type: AWS::DocDB::DBInstance
+    Condition: createCluster
+    Properties:
+      DBClusterIdentifier: !Ref DocDBCluster
+      DBInstanceClass: db.r5.large
+      DBInstanceIdentifier: getting-started-with-documentdb2
+  DocDBInstance3:
+    DependsOn: DocDBCluster
+    Type: AWS::DocDB::DBInstance
+    Condition: createCluster
+    Properties:
+      DBClusterIdentifier: !Ref DocDBCluster
+      DBInstanceClass: db.r5.large
+      DBInstanceIdentifier: getting-started-with-documentdb3
+  DocDBCluster:
+    DependsOn: DocDBSubnetGroup
+    Type: AWS::DocDB::DBCluster
+    Condition: createCluster
+    Properties:
+        BackupRetentionPeriod : 7
+        DBClusterIdentifier : getting-started-with-documentdb
+        DBSubnetGroupName : !Ref DocDBSubnetGroup
+        MasterUsername : !Ref DocDBUser
+        MasterUserPassword : !Ref DocDBPassword
+        Port : 27017
+        PreferredBackupWindow : 01:00-02:00
+        PreferredMaintenanceWindow : sat:03:30-sat:05:00
+        DeletionProtection: false
+        VpcSecurityGroupIds:
+          - !GetAtt DocDBSecurityGroup.GroupId
+  DocDBSubnetGroup:
+    Type: AWS::DocDB::DBSubnetGroup
+    Properties:
+      DBSubnetGroupName: 'lab-vpc-subnet-group'
+      DBSubnetGroupDescription: 'Migration Lab SubnetGroup for data migration'
+      SubnetIds: !Split [',',!Ref PrivateSubnets]
+#outputs
+Outputs:
+  ClusterId:
+    Value: !Ref DocDBCluster
+    Condition: createCluster
+  ClusterEndpoint:
+    Value: !GetAtt DocDBCluster.Endpoint
+    Condition: createCluster
+  ClusterPort:
+    Value: !GetAtt DocDBCluster.Port
+    Condition: createCluster
+  EngineVersion:
+    Value: "4.0.0"
+  DocDBUser:
+    Value: !Ref DocDBUser
+  DocDBPassword:
+    Value: !Ref DocDBPassword
+  DocDBSgId:
+    Value: !GetAtt DocDBSecurityGroup.GroupId
