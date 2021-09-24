@@ -17,14 +17,14 @@ weight: 3
 
 You should see the different metric types as shown below.
 
-![EKS Metrics](/static/images/containerinsights/eks6.png?classes=shadow)
+![EKS Metrics](/images/containerinsights/eks6.png?classes=shadow)
 
 4. Click on the `ClusterName, Namespace, PodName` metric category.
 5. Select a couple of metrics in the list by checking the checkboxes. 
 
 You should see them appear on the graph as shown below.
 
-![EKS Metrics](/static/images/containerinsights/eks7.png?classes=shadow)
+![EKS Metrics](/images/containerinsights/eks7.png?classes=shadow)
 
 > From this console, you can select a particular metric and perform metric operations such as creating [Dashboards](/dashboards), [Alarms](/alarms), and [Anomaly Detection](/anomalydetection) models.
 

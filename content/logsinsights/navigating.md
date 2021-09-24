@@ -19,11 +19,11 @@ CloudWatch can automatically discover fields from your log data.
 
 You will see a list of fields that were discovered by CloudWatch automatically as shown below.
 
-![Logs Insights log group details](/static/images/logsinsights/li8.png?classes=shadow)
+![Logs Insights log group details](/images/logsinsights/li8.png?classes=shadow)
 
 This allows you to pick and include the fields that you want to query on in the query area using intellisense.
 
-![Logs Insights logs insights intellisense](/static/images/logsinsights/li11.png?classes=shadow)
+![Logs Insights logs insights intellisense](/images/logsinsights/li11.png?classes=shadow)
 
 #### Sample queries
 Logs Insights also provides sample queries for you to easily get started with.
@@ -32,7 +32,7 @@ Logs Insights also provides sample queries for you to easily get started with.
 
 > You will see a list of sample queries sorted into categories such as service or frequency of use. Select a query and click 'Apply' on the query you are interested in to use it.
 
-![Logs Insights sample queries](/static/images/logsinsights/li12.png?classes=shadow)
+![Logs Insights sample queries](/images/logsinsights/li12.png?classes=shadow)
 
 #### Saved queries and query history
 You can save your queries into Logs Insights to access them later. Simply click the `Save` button on the interface and provide a name to it to Save the query. You can also optionally provide a custom name for the folder.
@@ -42,18 +42,18 @@ You can save your queries into Logs Insights to access them later. Simply click 
 9. Select `Save`.
 
 
-![Logs Insights saved queries](/static/images/logsinsights/li10.png?classes=shadow)
+![Logs Insights saved queries](/images/logsinsights/li10.png?classes=shadow)
 
 10. In the right navigation menu, click `Queries`.
 
 You should now have a query called `Sample1` listed under `Saved queries`.
 
-![Logs Insights save query successfully](/static/images/logsinsights/li9.png?classes=shadow)
+![Logs Insights save query successfully](/images/logsinsights/li9.png?classes=shadow)
 
 11. Click the `History` button underneath the query editor. 
 
 Here you can see a history of all the queries you have executed. You will be able to see queries executed by the logged in user whether they are saved queries or not.
 
-![Logs Insights query history](/static/images/logsinsights/li13.gif?classes=shadow)
+![Logs Insights query history](/images/logsinsights/li13.gif?classes=shadow)
 
 This concludes the Logs Insights module.

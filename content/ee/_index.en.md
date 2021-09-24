@@ -19,28 +19,28 @@ AWS Event Engine allows AWS field teams to run Workshops, GameDays, Bootcamps, I
 
 Open a web browser and navigate to the Event Engine login page: [https://dashboard.eventengine.run](https://dashboard.eventengine.run). You will be presented with the terms and condtions login page.  Please read and understand the terms and conditions governing the use of Event Engine accounts.
 
-![EventEngine](/static/images/ee/ee.png)
+![EventEngine](/images/ee/ee.png)
 
 Event staff will provide you with a 12 digit team hash. Use the 12 digit hash to login.
 
-![EventEngine](/static/images/ee/ee2.png)
+![EventEngine](/images/ee/ee2.png)
 
 ::alert[You may be prompted with an additional login step. If so, ask the event staff for further instruction.]{type="info"}
 
 After logging in, you will be redirected to the Team Dashboard. Set your team name if you like.  (We have enough accounts for participants to each have their own account, but all participants are welcome to form teams.)
 
 
-![EventEngine](/static/images/ee/ee3.png)
+![EventEngine](/images/ee/ee3.png)
 
 Click the AWS Console link to login to the AWS account you’ll use for today’s event.
 
-![EventEngine](/static/images/ee/ee4.png)
+![EventEngine](/images/ee/ee4.png)
 
 Click the ‘Open AWS Console’ button to open the AWS Console. 
 
 ::alert[Note the region that the event is using. **Only actions in this region are allowed.**]{type="warning"}
 
-![EventEngine](/static/images/ee/ee5.png)
+![EventEngine](/images/ee/ee5.png)
  
 You should now be able to access the AWS Console.
 

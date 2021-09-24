@@ -18,13 +18,13 @@ weight: 2
 ::alert[Note: The red arrows with text are call outs for various possible actions you can take on the screen.]{type="info"}
 
 
-![Traces home screen showing various filter options on trace annotation](/static/images/servicelens/sl-traces1.png?classes=shadow)
+![Traces home screen showing various filter options on trace annotation](/images/servicelens/sl-traces1.png?classes=shadow)
 
 5. Scroll down and type `MakePayment` into the filter traces textbox. 
 > This will filter and only show the traces with URLs containing the text `MakePayment`. 
 
 6. Select any of the traces from the table by clicking on the trace ID.
 
-![Filtering trace data](/static/images/servicelens/sl-traces2.png?classes=shadow)
+![Filtering trace data](/images/servicelens/sl-traces2.png?classes=shadow)
 
 This concludes this section. You may continue on to the next section.

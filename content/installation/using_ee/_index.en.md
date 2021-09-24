@@ -14,4 +14,4 @@ The PetAdoptions application stack (along with the traffic generator) has automa
 
 If Cloud9 is neccessary, visit the [Cloud9 console](https://console.aws.amazon.com/cloud9/home#) and click `Open IDE` on the `observabilityworkshop` Cloud9 instance to access your Cloud9 environment as shown below.
 
-![Cloud9 Instance](/static/images/c9-openIDE.png?classes=shadow)
+![Cloud9 Instance](/images/c9-openIDE.png?classes=shadow)

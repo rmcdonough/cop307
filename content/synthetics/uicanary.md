@@ -9,7 +9,7 @@ weight: 1
 2. On the left navigation menu under the `Synthetics` section, click `Canaries`.
 3. Click the `create canary` button.
 
-![New canary](/static/images/synthetics/synthetics1.png)
+![New canary](/images/synthetics/synthetics1.png)
 
 ### Create a GUI Workflow canary
 
@@ -75,7 +75,7 @@ As you can see, this code performs three clicks on the three different elements 
 
 > You can also optionally create an alarm based on the metrics created by Synthetics as shown below.
 
-![New canary2](/static/images/synthetics/synthetics2.png)
+![New canary2](/images/synthetics/synthetics2.png)
 
 > Under `VPC settings`, you can also select the VPC under which you want the canary to be placed on. This is vital if you are testing a non-public facing endpoint. In our case the API endpoint is public facing, so you can leave it as it is. 
 
@@ -83,7 +83,7 @@ As you can see, this code performs three clicks on the three different elements 
 
 This will create the canary and start execution. You should be able to see the canary status on the canary home page as shown below.
 
-![New canary2](/static/images/synthetics/synthetics5.png)
+![New canary2](/images/synthetics/synthetics5.png)
 
 19. Click on the name of the canary that you just created (it should be `ui-canary`).
 > You should see a screen with execution details for the past executions. The failure runs as in red dots for easier identification. You can select any one of them and go to `Logs` tab to see the execution logs.
@@ -92,6 +92,6 @@ Since this canary performs UI automation, you will also see the screenshots capt
 
 20. Navigate around the `Metrics` and `Configuration` tabs to see more details about the canary run.
 
-![Canary details](/static/images/synthetics/synthetics6.gif)
+![Canary details](/images/synthetics/synthetics6.gif)
 
 This concludes this section. You may continue on to the next section.

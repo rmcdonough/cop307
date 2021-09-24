@@ -16,7 +16,7 @@ The application log groups appear with this syntax:
 2. In the left navigation menu under `Logs`, click on `Log groups`.
 3. In the `Filter log groups` search bar, type in `Services-PayForAdoption`.
 
-![ECS Log groups](/static/images/containerinsights/ecs7.png?classes=shadow)
+![ECS Log groups](/images/containerinsights/ecs7.png?classes=shadow)
 
 4. Click on the log group that is returned in the results by clicking on the name.
 
@@ -36,7 +36,7 @@ The application log groups appear with this syntax:
 
  Your screen should look similar to the screen shot below. From here you can view and analyze the metric log data.
 
-![EMF Log event](/static/images/containerinsights/ecs8.png?classes=shadow)
+![EMF Log event](/images/containerinsights/ecs8.png?classes=shadow)
 
 ### Using Logs Insights to query log data
 
@@ -62,6 +62,6 @@ fields @timestamp, @message
 
 Your screen should look similar to the screenshot shown below.
 
-![ECS LogInsightsQuery](/static/images/containerinsights/ecs9.png?classes=shadow)
+![ECS LogInsightsQuery](/images/containerinsights/ecs9.png?classes=shadow)
 
 This concludes this section. You may continue on to the next section.

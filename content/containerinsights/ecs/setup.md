@@ -7,7 +7,7 @@ weight: 1
 
 The following architecture diagram illustrates the ECS Container Insights portion of the PetAdoptions application. PetAdoptions' ECS services use [AWS FireLens](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using_firelens.html) to collect logs and metrics in [Embedded Metric Format (EMF)](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Embedded_Metric_Format.html) and send that information over to CloudWatch.
 
-![Architecture](/static/images/containerinsights/cwci-ecs-arch.png)
+![Architecture](/images/containerinsights/cwci-ecs-arch.png)
 
 ### Verify that ECS Container Insights is enabled
 The PetAdoptions application uses an ECS Fargate cluster. Container Insights has already been enabled on this cluster, and we will verify this with the following steps. 

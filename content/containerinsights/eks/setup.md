@@ -13,7 +13,7 @@ The PetAdoptions front-end web application is hosted on an EKS cluster and has C
 
 Below is the architecture diagram that shows the components that are involved in collecting logs and metrics from your EKS environment.
 
-![Architecture](/static/images/containerinsights/cwci-eks-arch-jan31.png)
+![Architecture](/images/containerinsights/cwci-eks-arch-jan31.png)
 
 ### Check Container Insights on the cluster
 We will start by verifying that the necessary agents have been installed properly.
@@ -52,4 +52,4 @@ A Dashboard for Fluentbit metrics is created as part of the deployment and can b
 ::alert[If you want to learn more about Cloudwatch Dashboards, be sure to check out [this](/dashboards) section.]{type="info"}
 
 
-![Fluentbit_dashboard](/static/images/containerinsights/fluentbitdashboard.png)
+![Fluentbit_dashboard](/images/containerinsights/fluentbitdashboard.png)

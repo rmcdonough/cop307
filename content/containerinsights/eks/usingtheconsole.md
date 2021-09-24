@@ -14,7 +14,7 @@ weight: 2
 
 You can also search for a specific resource by using the `Find resources` search box. For example, you can execute a search for resources containing the keyword `pod` as shown below.
 
-![EKS Resources page](/static/images/containerinsights/eks1.png?classes=shadow)
+![EKS Resources page](/images/containerinsights/eks1.png?classes=shadow)
 
 #### Map view
 4. Click on `Map View` in the top right corner.
@@ -26,7 +26,7 @@ You can also search for a specific resource by using the `Find resources` search
 > This will cause critical metrics about the resource to appear at the bottom of the screen. In this example, you can see cpu, memory, and network related metrics aggregated at the cluster level.
 
 
-![EKS Map view](/static/images/containerinsights/eks2.png?classes=shadow)
+![EKS Map view](/images/containerinsights/eks2.png?classes=shadow)
 
 6. Click the `View Dashboard` button located in the top left of the panel displaying the metrics.
 
@@ -42,19 +42,19 @@ Here you will be able to see the automatic dashboards created by CloudWatch Cont
 
 As demonstrated in the GIF below, you can also see the application and performance logs for a selected resource.
 
-![EKS Dashboard](/static/images/containerinsights/eks3.gif?classes=shadow)
+![EKS Dashboard](/images/containerinsights/eks3.gif?classes=shadow)
 
 8. Select `EKS Services` from the dashboard drop down.
 9. Select `PetSite` from the `Filters` drop down. (The drop down directly to the right of the dashboard drop down).
 10. Scroll down to the `Pod Performance` section and select one of the tasks by checking the checkbox. 
 11. Click on the `Actions` drop down at the top right of the section, then click `View performance logs`.
 
-![EKS Logs](/static/images/containerinsights/eks4.png?classes=shadow)
+![EKS Logs](/images/containerinsights/eks4.png?classes=shadow)
 
 You will be redirected to the `CloudWatch Logs Insights` screen as shown below. Notice that the log group and time line were already selected, and a sample query is already present.
 
 12. Click `run query` and view the logs listed.
 
-![EKS Logs Insights](/static/images/containerinsights/eks5.png?classes=shadow)
+![EKS Logs Insights](/images/containerinsights/eks5.png?classes=shadow)
 
 This concludes this section. You may continue on to the next section.

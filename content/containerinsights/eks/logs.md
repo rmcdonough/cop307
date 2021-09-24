@@ -17,7 +17,7 @@ The PetAdoptions EKS Logs are collected by the fluentd daemonset running in the 
 2. In the left navigation menu under `Logs`, click on `Log groups`.
 3. In the `Filter log groups` search bar, type in `petsite`.
 
-![EKS Container Insights Log Groups](/static/images/containerinsights/eks8.png?classes=shadow)
+![EKS Container Insights Log Groups](/images/containerinsights/eks8.png?classes=shadow)
 
 4. Click on the log group that ends with `performance`.
 
@@ -37,7 +37,7 @@ The PetAdoptions EKS Logs are collected by the fluentd daemonset running in the 
 
  Your screen should look similar to the screen shot below. From here you can view and analyze the metric log data.
 
-![EMF Log event](/static/images/containerinsights/eks9.png?classes=shadow)
+![EMF Log event](/images/containerinsights/eks9.png?classes=shadow)
 
 ### Using Logs Insights to query log data
 
@@ -59,6 +59,6 @@ fields @timestamp, @message
 
 > Running the query above returns log data that contains the string `puppy` in the log message.
 
-![EKS LogInsightsQuery](/static/images/containerinsights/eks10.png?classes=shadow)
+![EKS LogInsightsQuery](/images/containerinsights/eks10.png?classes=shadow)
 
 This concludes this section. You may continue on to the next section.

@@ -16,4 +16,4 @@ _This clip has been cued to play an **14m30s** excerpt from the middle of the vi
 
 ### AWS Observability options
 
-![Cloud9 Instance](/static/images/intro/aws-observability.png?classes=shadow)
+![Cloud9 Instance](/images/intro/aws-observability.png?classes=shadow)

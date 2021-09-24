@@ -14,7 +14,7 @@ weight: 30
 
 1. In the AWS Management Console on the Services menu, click `Cloud9`.
 2. Click `Open IDE` on the `observabilityworkshop` Cloud9 instance.
-![Cloud9 Instance](/static/images/c9-openIDE.png?classes=shadow)
+![Cloud9 Instance](/images/c9-openIDE.png?classes=shadow)
 
 3. Click the gear icon in the top right to open the `Prefences` tab.
 4. Select `AWS SETTINGS` from the left navigation menu.
@@ -22,7 +22,7 @@ weight: 30
 6. Close the `Preferences` tab.
 7. Navigate to the terminal at the bottom of the screen. (If you do not see  a terminal, click `Window` from the top menu, then `New Terminal`)
 
-![c9disableiam](/static/images/c9disableiam.png)
+![c9disableiam](/images/c9disableiam.png)
 
 ### Remove existing temporary credentials
 8. Execute the following command in the terminal:
@@ -135,7 +135,7 @@ kubectl get nodes
 ```
 
 After execution, your output should look like the below screenshot:
-![Kubeconfig](/static/images/eksconfigured.png)
+![Kubeconfig](/images/eksconfigured.png)
 
 ### Explore the web application (optional)
 
@@ -146,12 +146,12 @@ aws ssm get-parameter --name '/petstore/petsiteurl'  | jq -r .Parameter.Value
 ```
 19. Navigate to the URL that was returned as a result. You should be see the application home screen as shown below.
 
-![App Home](/static/images/playaround/home.png)
+![App Home](/images/playaround/home.png)
 
 
 You can navigate through the application as shown below.
 
-![App Home](/static/images/playaround/play.gif)
+![App Home](/images/playaround/play.gif)
 
 #### Troubleshooting
 

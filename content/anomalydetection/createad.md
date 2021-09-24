@@ -22,16 +22,16 @@ The algorithms generate an anomaly detection model. The model generates a range 
 Your screen should look similar to the one below:
 
 
-![Cloudwatch metric visualization](/static/images/anomalydetection/detection1.png?classes=shadow)
+![Cloudwatch metric visualization](/images/anomalydetection/detection1.png?classes=shadow)
 
 6. Click on the `Graphed metrics` tab.
 7. Click on the `Anomaly Detection` icon as shown in the picture below.
 
-![Option to enable anomaly detection](/static/images/anomalydetection/detection2.png)
+![Option to enable anomaly detection](/images/anomalydetection/detection2.png)
 
 Anomaly Detection (AD) will be enabled immediately. A model is created based on the metric data points for a 2 week period. AD can also be enabled even if there is no data available for 2 week period.
 
-![Anomaly detection enabled on a metric](/static/images/anomalydetection/detection3.gif?classes=shadow)
+![Anomaly detection enabled on a metric](/images/anomalydetection/detection3.gif?classes=shadow)
 
 ### Modifying the Anomaly Detection expression
 
@@ -43,14 +43,14 @@ ANOMALY_DETECTION_BAND(m1, 2)
 
 This indicates that AD has been enabled for the metric with Id `m1` with a standard deviation of 2 as default. You can also adjust the standard deviation to give more wiggle room for the metric datapoint if desired. Simply edit the expression as shown below.
 
-![Modifying Anomlay Detection band](/static/images/anomalydetection/detection4.gif?classes=shadow)
+![Modifying Anomlay Detection band](/images/anomalydetection/detection4.gif?classes=shadow)
 
 ### Editing and deleting an existing model
 
 You can edit a model by  clicking on `Edit model` link located in the `Actions` row. This will take you to the edit screen, where you can edit the model to exclude a specific time period from the model calculation. 
 For example, if you have a deployment coming up and you expect the metrics during that time to affect the AD model, just add that duration to the excluded period, which will make AD ignore metrics during that timeframe.
 
-![Edit existing anomaly detection model](/static/images/anomalydetection/detection5.png?classes=shadow)
+![Edit existing anomaly detection model](/images/anomalydetection/detection5.png?classes=shadow)
 
 To delete a model, simply click on `Delete model`.
 

@@ -20,21 +20,21 @@ weight: 10
 4. Select `AWS SETTINGS` from the left navigation menu.
 5. Toggle off the `AWS managed temporary credentials` setting.
 6. Close the `Preferences` tab.
-![c9disableiam](/static/images/c9disableiam.png)
+![c9disableiam](/images/c9disableiam.png)
 
 
 ### Attach IAM Instance Profile
 7. Select `Manage EC2 Instances` on the User details in the top right corner:
 
-![manageEC2Instance](/static/images/manageec2.png)
+![manageEC2Instance](/images/manageec2.png)
 
 8. Select the Cloud9 EC2 instance, then `Modify IAM role`.
 
-![cloud9ModifyRole](/static/images/cloud9modifyRole.png)
+![cloud9ModifyRole](/images/cloud9modifyRole.png)
 
 9. Select the IAM Role `observabilityworkshop-profile` from the list and click Save.
 
-![cloud9ModifyRole2](/static/images/cloud9modifyRole2.png)
+![cloud9ModifyRole2](/images/cloud9modifyRole2.png)
 
 ### Remove temporary credentials
 10. Navigate to the terminal at the bottom of the screen. (If you do not see  a terminal, click `Window` from the top menu, then `New Terminal`).
@@ -106,7 +106,7 @@ kubectl get nodes
 ```
 
 After execution, your output should look like the screenshot below:
-![Kubeconfig](/static/images/eksconfigured.png)
+![Kubeconfig](/images/eksconfigured.png)
 
 You have now successfully setup your Cloud9 environment.
 

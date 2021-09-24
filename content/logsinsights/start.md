@@ -14,7 +14,7 @@ weight: 1
 > Note: you can select more than one log group. As of May 2020, you can select up to 20 log groups at a time.
 
 
-![Select Log Groups](/static/images/logsinsights/li1.png?classes=shadow)
+![Select Log Groups](/images/logsinsights/li1.png?classes=shadow)
 
 You will see that a sample query is automatically placed in the query field. 
 
@@ -22,7 +22,7 @@ You will see that a sample query is automatically placed in the query field.
 
 > The sample query fetches the `@timestamp` and `@message` fields from the log data, orders by the timestamp field in descending order and, displays the first 20 records.
 
-![Log Results2](/static/images/logsinsights/li2.png?classes=shadow)
+![Log Results2](/images/logsinsights/li2.png?classes=shadow)
 
 
 ::alert[You can learn more about Logs Insights syntax and queries [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html).]{type="info"}
@@ -45,7 +45,7 @@ fields @timestamp, @message
 
 > The are results ordered by the timestamp field and displayed in descending order.
 
-![Log Results5](/static/images/logsinsights/li5.png?classes=shadow)  
+![Log Results5](/images/logsinsights/li5.png?classes=shadow)  
 
 #### List with aggregation, sort and timeseries
 
@@ -63,7 +63,7 @@ You can also visualize the results by clicking on the `Visualization` tab in the
 
 > Notice that you can also add the visualization to a CloudWatch Dashboard, export to csv and so on.
 
-![Log Results7](/static/images/logsinsights/li7.png?classes=shadow) 
+![Log Results7](/images/logsinsights/li7.png?classes=shadow) 
 
 ### Querying using AWS CLI
 

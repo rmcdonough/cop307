@@ -31,6 +31,6 @@ echo -e "Cloud9 Instance is Ready!!\n\n"
 
 > Safe Paste is a CloudShell security feature that allows you to verify multiline text. Verify that the copied text does not contain malicious scripts before continuing.
 
-![CloudShell Safe Paste](/static/images/cloudshell.png?classes=shadow)
+![CloudShell Safe Paste](/images/cloudshell.png?classes=shadow)
 
 4. After some time, the message "Cloud9 Instance is Ready!!" will output to the terminal. This indicates the successful creation of your Cloud9 environment.
