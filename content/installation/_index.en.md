@@ -8,7 +8,7 @@ weight: 20
 ---
 
 The following architecture diagram illustrates the various components of the PetAdoptions application. Follow the installation instructions in this section to spin up this environment in your account. (If you are running this workshop on your own AWS account, remember to delete all resources by following [the cleanup instructions](/_cleanup) to avoid unnecessary usage charges.)
-![Architecture](/static/images/arch/PetAdoptions_architecture.png)
+![Architecture](/images/arch/PetAdoptions_architecture.png)
 
 If you are attending an AWS workshop and using AWS Event Engine, proceed to section [2.1.](/installation/using_ee)
 
