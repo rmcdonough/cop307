@@ -1,2 +1,2 @@
-# observability-workshop-reinvent2021
+cop307
 
