@@ -1,6 +1,6 @@
 ---
 date: "2021-01-31T13:36:36-05:00"
-title: Introduction to AWS Observability
+title: COP307 - Observability best practices for modern & traditional applications
 weight: 5
 ---
 
