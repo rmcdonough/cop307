@@ -18,5 +18,4 @@ A single request can query up to 20 log groups. Queries time out after 15 minute
 
 You can save queries that you have created. This can help you run complex queries when you need, without having to re-create them each time that you want to run them.
 
-
-:button[Learn more about this topic...]{href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html"}
+You can learn more about this topic [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html)

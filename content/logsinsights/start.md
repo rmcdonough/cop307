@@ -9,10 +9,9 @@ weight: 1
 
 1. In the AWS Management Console on the Services menu, click `CloudWatch`.
 2. In the left navigation menu under `Logs`, click on `Insights`.
-3. From the `Select log group(s)` drop down, select the `ecs/PetListAdoptions` log group.
+3. From the `Select log group(s)` drop-down, select the `ecs/PetListAdoptions` log group.
 
 > Note: you can select more than one log group. As of May 2020, you can select up to 20 log groups at a time.
-
 
 ![Select Log Groups](/images/logsinsights/li1.png?classes=shadow)
 
@@ -24,9 +23,9 @@ You will see that a sample query is automatically placed in the query field.
 
 ![Log Results2](/images/logsinsights/li2.png?classes=shadow)
 
-
-::alert[You can learn more about Logs Insights syntax and queries [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html).]{type="info"}
-
+{{% notice tip %}}
+You can learn more about Logs Insights syntax and queries [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html).
+{{% /notice %}}
 
 #### Simple list with filter and sort
 
@@ -69,24 +68,31 @@ You can also visualize the results by clicking on the `Visualization` tab in the
 
 You can also query log groups using the AWS CLI.
 
+{{% notice info %}}
+Ensure that the [Setup Cloud9](/installation/using_ee/setup_cloud9.html) steps are completed before proceeding.
+{{% /notice %}}
+
 9. Execute the following query in the terminal:
  
  > The query below queries the top 10 log records from a log group for a specific time period.
 
-::alert[You may need to update the start and end time parameter values to the right epoch time values. You can calculate epoch time values from this public website - https://www.epochconverter.com/]{type="info"}
+{{% notice info %}}
+You may need to update the start and end time parameter values to the right epoch time values. You can calculate epoch time values from this public website - https://www.epochconverter.com/
+{{% /notice %}}
 
+```bash
+aws logs start-query \
+--log-group-name /ecs/PetListAdoptions \
+--start-time $(date -d "12 hour ago" "+%s") \
+--end-time $(date "+%s") \
+--query-string 'fields @message | limit 10'
 ```
-aws logs start-query --log-group-name /ecs/PetListAdoptions --start-time $(date -d "12 hour ago" "+%s") --end-time $(date "+%s") --query-string 'fields @message | limit 10'
-```
-
-::alert[[Setup Cloud9](/installation/using_ee/_setup_cloud9) in case you did not do that already]{type="info"}
-
-The above query will return a queryId. 
+The above query will return a `queryId`.
 
 10. Copy and paste the query id that was return as a result of the query above.
 11. Replace `<QUERY_ID>` with the query ID that you copied from the result and execute the command below in the terminal:
 
-```
+```bash
 aws logs get-query-results --query-id <QUERY_ID>
 ```
 
