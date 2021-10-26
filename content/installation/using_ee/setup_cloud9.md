@@ -1,16 +1,17 @@
 ---
 date: "2020-08-29T14:10:29-04:00"
-hidden: false
-pre: <b>▶︎ </b>
-title: Setup Cloud9 (optional)
-weight: 10
+menuTitle: 2.2 Setup Cloud9
+title: 2.2 Setup Cloud9
+weight: 6
 ---
 
+{{% notice info %}}
+Cloud9 typically manages IAM credentials dynamically. Because we want to have a specific IAM role for EKS, we will be turning off this functionality.
+{{% /notice %}}
 
-::alert[Cloud9 typically manages IAM credentials dynamically. Because we want to have a specific IAM role for EKS, we will be turning off this functionality.]{type="info"}
-
-::alert[You only need to follow these instructions if you want to interact with the environment through Cloud9 such as executing commands. Since the application is already deployed and setup, you can go directly to the module you are interested in.]{type="info"}
-
+{{% notice warning %}}
+Note that AWS often updates the console experience, and the screenshots included here may differ slightly from what you experience. Ask an AWS event helper if you have any trouble.
+{{% /notice %}}
 
 ### Disable AWS managed temporary credentials
 1. In the AWS Management Console on the Services menu, click `Cloud9`.
@@ -89,15 +90,8 @@ aws sts get-caller-identity --query Arn | grep observabilityworkshop-admin -q &&
 cd workshopfiles/one-observability-demo/PetAdoptions/cdk/pet_stack
 ```
 
-16. Execute the following command in the terminal:
-> This command installs all npm packages.
-
-```bash
-npm install
-```
-
 ### Update kubeconfig
-17. Execute the following commands in the terminal:
+16. Execute the following commands in the terminal:
 > These commands update kubeconfig so you can interact with the EKS cluster
 
 ```bash
