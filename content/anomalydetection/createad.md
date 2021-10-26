@@ -21,7 +21,6 @@ The algorithms generate an anomaly detection model. The model generates a range 
 
 Your screen should look similar to the one below:
 
-
 ![Cloudwatch metric visualization](/images/anomalydetection/detection1.png?classes=shadow)
 
 6. Click on the `Graphed metrics` tab.
@@ -37,7 +36,7 @@ Anomaly Detection (AD) will be enabled immediately. A model is created based on 
 
 Notice the expression below in the `Details` tab:
 
-```bash
+```
 ANOMALY_DETECTION_BAND(m1, 2)
 ```
 
@@ -72,7 +71,9 @@ If you deployed petsite on ECS, the following command creates an AD model on the
  aws cloudwatch put-anomaly-detector --namespace ECS/ContainerInsights --metric-name CpuUtilized --stat Average --dimensions Name=ClusterName,Value=<REPLACE_THE_ECS_CLUSTER_NAME_HERE>
 ```
 
-::alert[Learn about the syntax of this CLI command [here](https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/put-anomaly-detector.html).]{type="info"}
+{{% notice tip %}}
+Learn about the syntax of this CLI command [here](https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/put-anomaly-detector.html).
+{{% /notice %}}
 
 ### List all AD models in your account
 
@@ -107,4 +108,4 @@ You should see a result similar to the one below.
 
 ```
 
-This concludes the Anomoly Detection module.
+This concludes the Anomaly Detection module.
