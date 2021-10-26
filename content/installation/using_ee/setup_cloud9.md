@@ -5,6 +5,8 @@ title: 2.2 Setup Cloud9
 weight: 6
 ---
 
+![You are here](/images/Slide2.png)
+
 {{% notice info %}}
 Cloud9 typically manages IAM credentials dynamically. Because we want to have a specific IAM role for EKS, we will be turning off this functionality.
 {{% /notice %}}
