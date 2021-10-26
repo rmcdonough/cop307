@@ -7,7 +7,9 @@ weight: 1
 
 The PetAdoptions front-end web application is hosted on an EKS cluster and has CloudWatch Container Insights enabled. (Take a look at the documentation [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-setup-EKS-quickstart.html#Container-Insights-setup-EKS-quickstart-FluentBit) to learn more about CloudWatch Container Insights using Fluentbit.)
 
-::alert[Read this detailed [blog post](https://aws.amazon.com/blogs/containers/fluent-bit-integration-in-cloudwatch-container-insights-for-eks/) to learn about setting up CloudWatch Container Insights on EKS using Fluentbit.]{type="info"}
+{{% notice tip %}}
+Read this detailed [blog post](https://aws.amazon.com/blogs/containers/fluent-bit-integration-in-cloudwatch-container-insights-for-eks/) to learn about setting up CloudWatch Container Insights on EKS using Fluentbit.
+{{% /notice %}}
 
 ### Architecture
 
@@ -16,19 +18,19 @@ Below is the architecture diagram that shows the components that are involved in
 ![Architecture](/images/containerinsights/cwci-eks-arch-jan31.png)
 
 ### Check Container Insights on the cluster
-We will start by verifying that the necessary agents have been installed properly.
+We will start by verifying that the necessary agents have been installed properly. Execute the following commands in the Cloud9 terminal provisioned as part of the workshop: 
 
-* Execute the following commands in the Cloud9 terminal provisioned as part of the workshop: 
+{{% notice info %}}
+Ensure that you have completed the [Setup Cloud9](/installation/using_ee/setup_cloud9.html) steps in case you did not do that already.
+{{% /notice %}}
 
-::alert[[Setup Cloud9](/installation/using_ee/_setup_cloud9) in case you did not do that already]{type="info"}
-
-> This command creates a kubeconfig for Amazon EKS
+This command creates a kubeconfig for Amazon EKS
 
 ```bash
 aws eks update-kubeconfig --name PetSite
 ```
 
-> This command checks to make sure that the CloudWatch and FluentD agents have been installed properly.
+This command checks to make sure that the CloudWatch and FluentD agents have been installed properly.
 
 ```bash
 kubectl get pods -n amazon-cloudwatch
