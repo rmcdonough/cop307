@@ -1,5 +1,4 @@
 ---
-description: sdfsdf
 menuTitle: Explore Container Insights
 title: Explore Container Insights on ECS
 weight: 1
@@ -12,14 +11,18 @@ The following architecture diagram illustrates the ECS Container Insights portio
 ### Verify that ECS Container Insights is enabled
 The PetAdoptions application uses an ECS Fargate cluster. Container Insights has already been enabled on this cluster, and we will verify this with the following steps. 
 
-::alert[Click [here](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cloudwatch-container-insights.html) for additional documentation on how to enable Container Insights.]{type="info"}
+{{% notice tip %}}
+Click [here](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cloudwatch-container-insights.html) for additional documentation on how to enable Container Insights.
+{{% /notice %}}
 
 1. In the AWS Management Console on the Services menu, navigate to `Elastic Container Service`.
 2. Click on the cluster that begins with `Services-PetSearch`.
 3. Copy the text listed next to  `Cluster:`. This is the name we will be using in a later step.
 4. In the command below, **replace** `<cluster-name>` with the name of the cluster you just copied, and execute the command in the Cloud 9 terminal:
 
-::alert[[Setup Cloud9](/installation/using_ee/_setup_cloud9) in case you did not do that already]{type="info"}
+{{% notice warning %}}
+The [Setup Cloud9 steps are required](/installation/using_ee/setup_cloud9.html) in case you did not do that already
+{{% /notice %}}
 
 ```bash
 aws ecs describe-clusters --clusters <cluster-name> | jq '.clusters[0].settings'

@@ -1,7 +1,4 @@
 ---
-chapter: true
-date: "2020-05-11T09:14:20-04:00"
-menuTitle: 5.2 EKS
 title: Container Insights on EKS
 weight: 20
 ---
