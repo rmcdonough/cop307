@@ -10,9 +10,12 @@ During re\:Invent 2020, AWS launched [Amazon Managed Service for Prometheus (AMP
 
 AWS also launched [AWS Distro for OpenTelemetry (ADOT)](https://aws-otel.github.io/)- a secure, production-ready, AWS-supported distribution of the OpenTelemetry project. Part of the Cloud Native Computing Foundation, OpenTelemetry provides open source APIs, libraries, and agents to collect distributed traces and metrics for application monitoring. With AWS Distro for OpenTelemetry, you can instrument your applications just once to send correlated metrics and traces to multiple AWS and Partner monitoring solutions.
 
+Today we will be exploring some of the cloud-native tooling that AWS offers in the observability space. The tools we use today compose part of the suite of solutions that we offer today.
+<!-- hiding for now
 :button[Watch]{href="https://youtu.be/jt-gV1YwmnI?t=6083"} Amazon CTO Werner Vogels' re\:Invent keynote where he launches Amazon Managed Service for Prometheus, Amazon Managed Service for Grafana, and AWS Distro for OpenTelemetry.
 
 _This clip has been cued to play an **14m30s** excerpt from the middle of the video (1:41:23-1:55:53)_
+-->
 
 ### AWS Observability options
 

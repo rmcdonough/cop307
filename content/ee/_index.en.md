@@ -6,22 +6,15 @@ title: Event Engine Access
 weight: 10
 ---
 
-| <span style="color: #FF9900;font-weight\:bold;font-size:20px">NOTE TO AWS EMPLOYEES</span> |
-| :------------- | 
-|  [Click here to learn more about conducting this workshop](https://tiny.amazon.com/1122nltrb/wamazbinviewAWSTeamTFCMana)| 
-
-
-::alert[If you are ***not*** currently participating in an AWS organized workshop event, this section does not apply to you. [Click here](/installation) to skip to Section 2.]{type="warning"}
-
 AWS Event Engine allows AWS field teams to run Workshops, GameDays, Bootcamps, Immersion Days, and other events that require hands-on access to AWS accounts. Follow the steps below to gain access to your Event Engine AWS account.
 
 ---
 
-Open a web browser and navigate to the Event Engine login page: [https://dashboard.eventengine.run](https://dashboard.eventengine.run). You will be presented with the terms and condtions login page.  Please read and understand the terms and conditions governing the use of Event Engine accounts.
+Open a web browser and navigate to the Event Engine login page: [https://dashboard.eventengine.run](https://dashboard.eventengine.run). You will be presented with the terms and conditions login page.  Please read and understand the terms and conditions governing the use of Event Engine accounts.
 
 ![EventEngine](/images/ee/ee.png)
 
-Event staff will provide you with a 12 digit team hash. Use the 12 digit hash to login.
+Event staff will provide you with a 12 digit team hash. Use the 12 digit hash to log into the event.
 
 ![EventEngine](/images/ee/ee2.png)
 
