@@ -31,22 +31,24 @@ The PetAdoptions EKS Logs are collected by the fluentd daemonset running in the 
 
 7. Click on an arrow from the first column in the table to expand a log.
 
-> Along with the performance log data, you will also see that there are metrics present in [Embedded Metric Format](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Embedded_Metric_Format_Specification.html). 
-
-::alert[Visit the [Embedded Metric Format (EMF)](/emf) module if you would like to learn more about EMF.]{type="info"}
-
- Your screen should look similar to the screen shot below. From here you can view and analyze the metric log data.
+Your screen should look similar to the screenshot below. From here you can view and analyze the metric log data.
 
 ![EMF Log event](/images/containerinsights/eks9.png?classes=shadow)
+
+{{% notice tip %}}
+Container Insights uses [Embedded Metric Format](https://aws.amazon.com/about-aws/whats-new/2019/11/amazon-cloudwatch-launches-embedded-metric-format/) to publish metrics into CloudWatch by way of CloudWatch logs. This allows for easy, arbitrary creation of custom metrics in CloudWatch metrics.
+{{% /notice %}}
 
 ### Using Logs Insights to query log data
 
 CloudWatch Logs Insights supports a query language that you can use to perform queries on your log groups.
 
-::alert[Visit the [Logs Insights module](/logsinsights) for a deeper dive on this topic.]{type="info"}
+{{% notice tip %}}
+Visit the [Logs Insights module](/logsinsights.html) for a deeper dive on this topic.
+{{% /notice %}}
 
 8. In the left navigation menu under `Logs`, click on `Insights`.
-9. Click the `select log group(s)` search/drop down and type `petsite`.
+9. Click the `select log group(s)` search/drop-down and type `petsite`.
 10. Select the log group `/aws/containerinsights/PetSite/application`.
 11. Delete the query that is already in the query editor and copy and paste in the following query: 
 
