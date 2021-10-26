@@ -27,8 +27,8 @@ aws ssm get-parameter --name '/petstore/petsiteurl'  | jq -r .Parameter.Value
 8. Take a look at the code below in the `syn-uicanary.js` file.
 
 ``` javascript
-    // Example: let url = "http://petsite-1081345346.us-east-1.elb.amazonaws.com/";
-    let url = "<WEBSITE_URL>";
+// Example: let url = "http://petsite-1081345346.us-east-1.elb.amazonaws.com/";
+let url = "<WEBSITE_URL>";
 ```
 
 9. Replace the string `<WEBSITE_URL>` with the PetSite URL that you copied in step 9 and `save` the file.
@@ -37,31 +37,31 @@ aws ssm get-parameter --name '/petstore/petsiteurl'  | jq -r .Parameter.Value
 11. Take a look at the code below which is also part of `syn-uicanary.js`.
 
 ``` javascript
-         await synthetics.executeStep('customerActions', async function () {
-        await page.waitForSelector("[id='searchpets']", { timeout: 30000 });
-        await page.click("[id='searchpets']");
-        try {
-            await synthetics.takeScreenshot("click", 'result');
-        } catch(ex) {
-            synthetics.addExecutionError('Unable to capture screenshot.', ex);
-        }
+await synthetics.executeStep('customerActions', async function () {
+    await page.waitForSelector("[id='searchpets']", { timeout: 30000 });
+    await page.click("[id='searchpets']");
+    try {
+        await synthetics.takeScreenshot("click", 'result');
+    } catch(ex) {
+        synthetics.addExecutionError('Unable to capture screenshot.', ex);
+    }
 
-        await page.waitForSelector("[id='seeadoptionlist']", { timeout: 30000 });
-        await page.click("[id='seeadoptionlist']");
-        try {
-            await synthetics.takeScreenshot("click", 'result');
-        } catch(ex) {
-            synthetics.addExecutionError('Unable to capture screenshot.', ex);
-        }
+    await page.waitForSelector("[id='seeadoptionlist']", { timeout: 30000 });
+    await page.click("[id='seeadoptionlist']");
+    try {
+        await synthetics.takeScreenshot("click", 'result');
+    } catch(ex) {
+        synthetics.addExecutionError('Unable to capture screenshot.', ex);
+    }
 
-        await page.waitForSelector("[id='performhousekeeping']", { timeout: 30000 });
-        await page.click("[id='performhousekeeping']");
-        try {
-            await synthetics.takeScreenshot("click", 'result');
-        } catch(ex) {
-            synthetics.addExecutionError('Unable to capture screenshot.', ex);
-        }
-    });
+    await page.waitForSelector("[id='performhousekeeping']", { timeout: 30000 });
+    await page.click("[id='performhousekeeping']");
+    try {
+        await synthetics.takeScreenshot("click", 'result');
+    } catch(ex) {
+        synthetics.addExecutionError('Unable to capture screenshot.', ex);
+    }
+});
 ```
 
 As you can see, this code performs three clicks on the three different elements on the page. 
