@@ -27,16 +27,16 @@ aws ssm get-parameter --name '/petstore/searchapiurl'  | jq -r .Parameter.Value
 8. Take a look at the code below in the `syn-apicanary.js` file.
 
 ``` javascript
-    const pettypes = ["fish", "bunny", "puppy", "kitten"];
-    const position = Math.floor(Math.random() ` Math.floor(4));
-   
-    const requestOptions = {
-        hostname: '<ALB_HOST_NAME>',
-        // Example: hostname: 'petsearch-live.us-east-1.elasticbeanstalk.com',
-        port: 80,
-        path: '/api/search?pettype='+pettypes[position],
-        method: 'GET'
-    }
+const pettypes = ["fish", "bunny", "puppy", "kitten"];
+const position = Math.floor(Math.random() ` Math.floor(4));
+
+const requestOptions = {
+    hostname: '<ALB_HOST_NAME>',
+    // Example: hostname: 'petsearch-live.us-east-1.elasticbeanstalk.com',
+    port: 80,
+    path: '/api/search?pettype='+pettypes[position],
+    method: 'GET'
+}
 ```
 
 The PetAdoptions application does not support the PetType `fish`, however this code above randomly picks array entries from the pettypes array. There are good chances for it to pick `fish` once in a while. 
@@ -47,23 +47,23 @@ The PetAdoptions application does not support the PetType `fish`, however this c
 11. Take a look at the code below which is also part of `syn-apicanary.js`.
 
 ``` javascript
-        req.on('response', (res) => {
-          log.info(`Status Code: ${res.statusCode}`)
-          log.info(`Response Headers: ${JSON.stringify(res.headers)}`)
-          if (res.statusCode !== 200) {
-             reject("Failed: " + requestOption.path);
-          }
-          res.on('data', (d) => {
-            log.info("Response: " + d.length);
-            if(d.length <= 2)
-            {
-                reject("PetType Invalid - : "+requestOption.path );
-            }
-          });
-          res.on('end', () => {
-            resolve();
-          })
-        });
+req.on('response', (res) => {
+  log.info(`Status Code: ${res.statusCode}`)
+  log.info(`Response Headers: ${JSON.stringify(res.headers)}`)
+  if (res.statusCode !== 200) {
+     reject("Failed: " + requestOption.path);
+  }
+  res.on('data', (d) => {
+    log.info("Response: " + d.length);
+    if(d.length <= 2)
+    {
+        reject("PetType Invalid - : "+requestOption.path );
+    }
+  });
+  res.on('end', () => {
+    resolve();
+  })
+});
 ```
 
 In this code, you see that the response length is checked, and if the response length is short (<=2) we call the `reject()` function which indicates canary executing failure.
