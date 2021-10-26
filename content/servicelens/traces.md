@@ -15,7 +15,9 @@ weight: 2
 
 4. Select any of the rows in the list and click `Add to filter`. This will filter and show on the traces based on the filter applied.
 
-::alert[Note: The red arrows with text are call outs for various possible actions you can take on the screen.]{type="info"}
+{{% notice tip %}}
+The red arrows with text are call-outs for various possible actions you can take on the screen.
+{{% /notice %}}
 
 
 ![Traces home screen showing various filter options on trace annotation](/images/servicelens/sl-traces1.png?classes=shadow)

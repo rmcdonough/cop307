@@ -8,9 +8,11 @@ weight: 1
 ### Service map on CloudWatch ServiceLens
 1. Click [here](https://console.aws.amazon.com/cloudwatch/home#servicelens\:map?~(query~()~context~(timeRange~(delta~300000)))) to navigate to CloudWatch ServiceLens.
 
-> You should be able to see a service map as shown below. At any given point, you can see trace data for up to a 6 hour time period.
+> You should be able to see a service map as shown below. At any given point, you can see trace data for up to a 6-hour time period.
 
-::alert[ServiceLens gets all the information you see on this screen from AWS X-Ray and there is no user action required for this.]{type="info"}
+{{% notice tip %}}
+ServiceLens gets all the information you see on this screen from AWS X-Ray and there is no user action required to configure this view. The traffic generator in the environment will have pre-populated the data that you see here.
+{{% /notice %}}
 
 ![Service Lens Service Map showing nodes, edges and time duration selection](/images/servicelens/sl-map.png?classes=shadow)
 
@@ -35,6 +37,6 @@ weight: 1
 
 ![LogsInsights integration with Trace data](/images/servicelens/sl-servicemetrics-logsinsights.png?classes=shadow)
 
-8. After viewing the log data, return back to the tab with the Lambda specific metrics.
+8. After viewing the log data, go back to the tab with the Lambda specific metrics.
 
 This concludes this section. You may continue on to the next section.
