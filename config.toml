@@ -3,7 +3,7 @@ CanonifyURLs=true
 languageCode = "en-US"
 defaultContentLanguage = "en"
 
-title = "Monitoring Amazon EKS on AWS Fargate using AMP and AMG"
+title = "COP307 re:invent 2021"
 theme = "learn"
 metaDataFormat = "yaml"
 defaultContentLanguageInSubdir= true
@@ -14,7 +14,7 @@ pygmentsCodeFences = true
 pygmentsStyle = "monokai"
 
 [params]
-  description = "Workshop for Monitoring Amazon EKS on AWS Fargate using AMP and AMG"
+  description = "COP307 re:invent 2021"
   author = ""
   disableBreadcrumb = false
   disableNextPrev = false
@@ -40,6 +40,6 @@ hrefTargetBlank = true
 
 [Languages]
 [Languages.en]
-title = "Monitoring Amazon EKS on AWS Fargate using AMP and AMG"
+title = "COP307 re:invent 2021"
 weight = 1
 languageName = "English"
