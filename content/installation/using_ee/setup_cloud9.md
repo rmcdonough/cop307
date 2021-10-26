@@ -102,6 +102,12 @@ kubectl get nodes
 After execution, your output should look like the screenshot below:
 ![Kubeconfig](/images/eksconfigured.png)
 
-You have now successfully setup your Cloud9 environment.
+You have now successfully set up your Cloud9 environment! Now let's use this environment to fetch the URL for the pet adoption website. Execute the following command:
 
-::alert[To explore the web application, [click here](/installation/not_using_ee/_deploy_app#playaround-with-the-app-optional).]{type="info"}
+```bash
+aws ssm get-parameter --name '/petstore/petsiteurl'  | jq -r .Parameter.Value
+```
+
+And now open this URL in a new tab of your web browser. You will then see a page like this one:
+
+![Pet adoption site landing page](/images/installation/petsite1.png)
