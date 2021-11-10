@@ -90,7 +90,7 @@ This will create the canary and start execution. You should be able to see the c
 
 Since this canary performs UI automation, you will also see the screenshots captured during test runs.
 
-20. Navigate around the `Metrics` and `Configuration` tabs to see more details about the canary run.
+20. Navigate around the `Monitoring` and `Configuration` tabs to see more details about the canary run.
 
 ![Canary details](/images/synthetics/synthetics6.gif)
 

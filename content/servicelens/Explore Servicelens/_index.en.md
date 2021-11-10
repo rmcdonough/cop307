@@ -1,11 +1,11 @@
 ---
 date: "2020-05-10T16:45:07-04:00"
-menuTitle: 3.1 Explore ServiceLens
-title: Explore ServiceLens
+menuTitle: 3.1 Explore ServiceLens Map
+title: Explore ServiceLens Map
 weight: 1
 ---
 
-### Service map on CloudWatch ServiceLens
+### Service map on CloudWatch ServiceLens Map
 1. Click [here](https://console.aws.amazon.com/cloudwatch/home#servicelens\:map?~(query~()~context~(timeRange~(delta~300000)))) to navigate to CloudWatch ServiceLens.
 
 > You should be able to see a service map as shown below. At any given point, you can see trace data for up to a 6-hour time period.
@@ -16,7 +16,7 @@ ServiceLens gets all the information you see on this screen from AWS X-Ray and t
 
 ![Service Lens Service Map showing nodes, edges and time duration selection](/images/servicelens/sl-map.png?classes=shadow)
 
-2. Select the `PetSite` node.
+2. Select the `payforadoption` node.
  
  > This will automatically show a quick view of the metrics generated from the service. Because this service is hosted on a container, you will also see that the `View in Container Insights` is enabled. Clicking on that button will take you directly to the Container Insights screen.
 

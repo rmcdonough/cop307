@@ -92,7 +92,7 @@ This will create the canary and start execution. You should be able to see the c
 
 Since this is an API testing canary which does not have UI, there were no screenshots captured.
 
-20. Navigate around the `Metrics` and `Configuration` tabs to see more details about the canary run.
+20. Navigate around the `Monitoring` and `Configuration` tabs to see more details about the canary run.
 
 ![New canary2](/images/synthetics/synthetics4.gif)
 
