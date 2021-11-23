@@ -6,8 +6,8 @@ weight: 1
 ---
 
 1. In the AWS Management Console on the Services menu, click `CloudWatch`.
-2. On the left navigation menu under the `Synthetics` section, click `Canaries`.
-3. Click the `create canary` button.
+2. On the left navigation menu Application monitoring click `Synthetics Canaries`.
+3. Click the `Create canary` button.
 
 ![New canary](/images/synthetics/synthetics1.png)
 
@@ -17,7 +17,7 @@ We are going to create a new canary that will test the PetSearch API responses.
 
 4. In a separate tab, navigate to `Cloud9` in the AWS console.
 5. Click Open IDE on the observabilityworkshop Cloud9 instance.
-6. Open the file called `syn-uicanary.js` located at `one-observability-demo/PetAdoptions/cdk/pet_stack/resources/syn-uicanary.js`.
+6. Open the file called `syn-uicanary.js` located at `~/workshopfiles/one-observability-demo/PetAdoptions/cdk/pet_stack/resources/`.
 7. Execute the following command in the terminal and copy the url that it returns: 
 
 ```bash
@@ -72,6 +72,13 @@ As you can see, this code performs three clicks on the three different elements 
 15. In the `Script editor` section, select `Upload Script`.
 16. Click on `Browse files`, then navigate to and select the `syn-canary.js` file from your downloads folder. 
 17. Type in `exports.handler` in the `Script entry point` textbox under `Lambda handler`
+18. Other options to configure for this canary include:
+
+* Schedule: *run continuously*
+* Frequency: *every 1 minute*
+* Data retention: *leave default*
+* Data storage: *leave default*
+* Access permissions: *Create a new role*
 
 > You can also optionally create an alarm based on the metrics created by Synthetics as shown below.
 
@@ -79,18 +86,18 @@ As you can see, this code performs three clicks on the three different elements 
 
 > Under `VPC settings`, you can also select the VPC under which you want the canary to be placed on. This is vital if you are testing a non-public facing endpoint. In our case the API endpoint is public facing, so you can leave it as it is. 
 
-18. Click `Create canary`.
+19. Click `Create canary`.
 
 This will create the canary and start execution. You should be able to see the canary status on the canary home page as shown below.
 
 ![New canary2](/images/synthetics/synthetics5.png)
 
-19. Click on the name of the canary that you just created (it should be `ui-canary`).
+20. Click on the name of the canary that you just created (it should be `ui-canary`).
 > You should see a screen with execution details for the past executions. The failure runs as in red dots for easier identification. You can select any one of them and go to `Logs` tab to see the execution logs.
 
 Since this canary performs UI automation, you will also see the screenshots captured during test runs.
 
-20. Navigate around the `Monitoring` and `Configuration` tabs to see more details about the canary run.
+21. Navigate around the `Monitoring` and `Configuration` tabs to see more details about the canary run.
 
 ![Canary details](/images/synthetics/synthetics6.gif)
 

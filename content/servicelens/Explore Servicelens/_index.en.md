@@ -32,7 +32,7 @@ ServiceLens gets all the information you see on this screen from AWS X-Ray and t
 
 ![ServiceMetrics](/images/servicelens/sl-servicemetrics2.png?classes=shadow)
 
-6. From the `Logs1` table, click `View in CloudWatch Logs Insights`. This will take you to the CloudWatch Logs Insights screen.
+6. From the `Logs` table, click `View in CloudWatch Logs Insights`. This will take you to the CloudWatch Logs Insights screen.
 7. Click the `Run query` button to execute the query and see log data.
 
 ![LogsInsights integration with Trace data](/images/servicelens/sl-servicemetrics-logsinsights.png?classes=shadow)
