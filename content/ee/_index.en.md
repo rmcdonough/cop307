@@ -10,7 +10,7 @@ weight: 10
 
 AWS Event Engine allows AWS field teams to run Workshops, GameDays, Bootcamps, Immersion Days, and other events that require hands-on access to AWS accounts. *Follow the steps below to gain access to your Event Engine AWS account*.
 
-Open a web browser and navigate to the Event Engine login page: [https://dashboard.eventengine.run](https://dashboard.eventengine.run). You will be presented with the terms and conditions login page.  Please read and understand the terms and conditions governing the use of Event Engine accounts.
+Open a web browser and navigate to the Event Engine login page: [https://dashboard.eventengine.run/login?hash=d2ff-1daec0f2e4-d6](https://dashboard.eventengine.run/login?hash=d2ff-1daec0f2e4-d6). You will be presented with the terms and conditions login page.  Please read and understand the terms and conditions governing the use of Event Engine accounts.
 
 ![EventEngine](/images/ee/ee.png)
 
